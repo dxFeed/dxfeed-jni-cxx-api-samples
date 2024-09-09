@@ -16,12 +16,12 @@ void listener(dsp_event_t **events, size_t size, void *user_data) {
 
     for (size_t i = 0; i < size; i++) {
         if (events[i]->type == DSP_ET_QUOTE) {
-            dsp_quote_t *q = (dsp_quote_t *) (events[i]);
+            dsp_quote_t *q = (dsp_quote_t *)(events[i]);
 
             printf("Quote{bid_price = %.15g, bid_size = %.15g, ask_price = %.15g, ask_size = %.15g}\n", q->bid_price,
                    q->bid_size, q->ask_price, q->ask_size);
         } else if (events[i]->type == DSP_ET_TRADE) {
-            dsp_trade_t *tr = (dsp_trade_t *) (events[i]);
+            dsp_trade_t *tr = (dsp_trade_t *)(events[i]);
 
             printf("Trade{price = %.15g, size = %.15g}\n", tr->price, tr->size);
         }
@@ -29,31 +29,31 @@ void listener(dsp_event_t **events, size_t size, void *user_data) {
 }
 
 int main() {
-    HMODULE handle = LoadLibrary(L"dllsample-dxfeed-plugin.dll");
+    HMODULE plugin_handle = LoadLibrary(L"dllsample-dxfeed-plugin.dll");
 
-    if (handle == NULL) {
-        return 1;
+    if (plugin_handle == NULL) {
+        return 42;
     }
 
-    dsp_init_t dsp_init = (dsp_init_t) (GetProcAddress(handle, "dsp_init"));
-    dsp_connect_t dsp_connect = (dsp_connect_t) (GetProcAddress(handle, "dsp_connect"));
-    dsp_subscribe_t dsp_subscribe = (dsp_subscribe_t) (GetProcAddress(handle, "dsp_subscribe"));
-    dsp_deinit_t dsp_deinit = (dsp_deinit_t) (GetProcAddress(handle, "dsp_deinit"));
+    dsp_init_fn_t dsp_init = (dsp_init_fn_t)(GetProcAddress(plugin_handle, "dsp_init"));
+    dsp_connect_fn_t dsp_connect = (dsp_connect_fn_t)(GetProcAddress(plugin_handle, "dsp_connect"));
+    dsp_subscribe_fn_t dsp_subscribe = (dsp_subscribe_fn_t)(GetProcAddress(plugin_handle, "dsp_subscribe"));
+    dsp_deinit_fn_t dsp_deinit = (dsp_deinit_fn_t)(GetProcAddress(plugin_handle, "dsp_deinit"));
 
     if (dsp_init == NULL || dsp_connect == NULL || dsp_subscribe == NULL || dsp_deinit == NULL) {
-        return 2;
+        FreeLibrary(plugin_handle);
+
+        return 5;
     }
 
-    char* address = "demo.dxfeed.com:7300";
+    char *address = "demo.dxfeed.com:7300";
 
     printf("Connecting to %s\n", address);
     dsp_connect("demo.dxfeed.com:7300");
     dsp_subscribe("AAPL", listener, NULL);
 
     Sleep(10000);
-
-    FreeLibrary(handle);
+    FreeLibrary(plugin_handle);
 
     return 0;
-
 }

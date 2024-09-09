@@ -54,21 +54,21 @@ typedef struct dsp_trade_t {
 
 #pragma pack(pop)
 
-typedef void (*dsp_events_listener)(dsp_event_t **events, size_t size, void *user_data);
+typedef void (*dsp_events_listener_t)(dsp_event_t **events, size_t size, void *user_data);
 
-typedef void (*dsp_init_t)();
+typedef void (*dsp_init_fn_t)();
 
 DLLSAMPLE_API void dsp_init();
 
-typedef void (*dsp_connect_t)(const char *);
+typedef void (*dsp_connect_fn_t)(const char *);
 
 DLLSAMPLE_API void dsp_connect(const char *address);
 
-typedef void (*dsp_subscribe_t)(const char *, dsp_events_listener, void *);
+typedef void (*dsp_subscribe_fn_t)(const char *, dsp_events_listener_t, void *);
 
-DLLSAMPLE_API void dsp_subscribe(const char *symbol, dsp_events_listener events_listener, void *user_data);
+DLLSAMPLE_API void dsp_subscribe(const char *symbol, dsp_events_listener_t events_listener, void *user_data);
 
-typedef void (*dsp_deinit_t)();
+typedef void (*dsp_deinit_fn_t)();
 
 DLLSAMPLE_API void dsp_deinit();
 

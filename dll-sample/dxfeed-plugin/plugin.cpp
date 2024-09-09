@@ -55,7 +55,7 @@ DLLSAMPLE_API void dsp_connect(const char *address) {
     }
 }
 
-DLLSAMPLE_API void dsp_subscribe(const char *symbol, dsp_events_listener events_listener, void *user_data) {
+DLLSAMPLE_API void dsp_subscribe(const char *symbol, dsp_events_listener_t events_listener, void *user_data) {
     Plugin::getInstance().getSubscription()->addEventListener([user_data, events_listener](const auto &events) {
         auto size = events.size();
 
