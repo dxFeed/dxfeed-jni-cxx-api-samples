@@ -28,7 +28,18 @@ void listener(dsp_event_t **events, size_t size, void *user_data) {
     }
 }
 
-int main() {
+int main(int argc, char **argv) {
+    if (argc == 2 && (strcmp("-?", argv[1]) == 0 || strcmp("-h", argv[1]) == 0)) {
+        printf("Usage: %s <address> <symbol>\n"
+               "Where:\n\n"
+               "<address> - data source address (demo.dxfeed.com:7300 etc),\n"
+               "            demo.dxfeed.com:7300 - default\n"
+               "<symbol>  - security symbol (e.g. IBM, AAPL, SPX etc.), AAPL - default\n\n",
+               argv[0]);
+
+        return 0;
+    }
+
     HMODULE plugin_handle = LoadLibrary(L"dllsample-dxfeed-plugin.dll");
 
     if (plugin_handle == NULL) {
@@ -47,10 +58,19 @@ int main() {
     }
 
     char *address = "demo.dxfeed.com:7300";
+    char *symbol = "AAPL";
+
+    if (argc > 1) {
+        address = argv[1];
+    }
+
+    if (argc > 2) {
+        symbol = argv[2];
+    }
 
     printf("Connecting to %s\n", address);
-    dsp_connect("demo.dxfeed.com:7300");
-    dsp_subscribe("AAPL", listener, NULL);
+    dsp_connect(address);
+    dsp_subscribe(symbol, listener, NULL);
 
     Sleep(10000);
     FreeLibrary(plugin_handle);
