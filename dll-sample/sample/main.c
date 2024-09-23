@@ -34,7 +34,8 @@ int main(int argc, char **argv) {
                "Where:\n\n"
                "<address> - data source address (demo.dxfeed.com:7300 etc),\n"
                "            demo.dxfeed.com:7300 - default\n"
-               "<symbol>  - security symbol (e.g. IBM, AAPL, SPX etc.), AAPL - default\n\n",
+               "<symbol>  - security symbol (e.g. IBM, AAPL, SPX etc.), AAPL - default\n\n"
+               "Example: dllsample-sample demo.dxfeed.com:7300 AAPL\n\n",
                argv[0]);
 
         return 0;
@@ -70,6 +71,7 @@ int main(int argc, char **argv) {
 
     printf("Connecting to %s\n", address);
     dsp_connect(address);
+    printf("Subscribing to %s\n", symbol);
     dsp_subscribe(symbol, listener, NULL);
 
     Sleep(10000);
