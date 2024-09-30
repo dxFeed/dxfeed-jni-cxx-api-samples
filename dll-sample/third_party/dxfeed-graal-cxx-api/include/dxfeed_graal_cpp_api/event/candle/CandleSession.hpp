@@ -34,7 +34,7 @@ DXFCPP_BEGIN_NAMESPACE
  * The key to use with these methods is available via CandleSession::ATTRIBUTE_KEY constant.
  * The value that this key shall be set to is equal to the corresponding CandleSession::toString()
  */
-struct DXFCPP_EXPORT CandleSession : public CandleSymbolAttribute {
+struct DXFCPP_EXPORT CandleSession final : CandleSymbolAttribute {
     /**
      * All trading sessions are used to build candles.
      */
@@ -78,7 +78,7 @@ struct DXFCPP_EXPORT CandleSession : public CandleSymbolAttribute {
      * Returns session filter that corresponds to this session attribute.
      * @return session filter that corresponds to this session attribute.
      */
-    const SessionFilter &getSessionFilter() const noexcept {
+    const SessionFilter &getSessionFilter() const& noexcept {
         return *sessionFilter_;
     }
 

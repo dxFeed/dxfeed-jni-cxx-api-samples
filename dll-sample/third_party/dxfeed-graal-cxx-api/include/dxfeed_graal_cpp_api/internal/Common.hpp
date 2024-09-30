@@ -198,7 +198,7 @@ static constexpr std::int64_t DAY = 24LL * HOUR;
  * @param timeMillis The timestamp in milliseconds
  * @return a correct number of milliseconds
  */
-static std::int32_t getMillisFromTime(std::int64_t timeMillis) {
+static constexpr std::int32_t getMillisFromTime(std::int64_t timeMillis) {
     return static_cast<std::int32_t>(math::floorMod(timeMillis, SECOND));
 }
 
@@ -250,7 +250,9 @@ template <Integral T> constexpr static T abs(T a) {
 
 namespace day_util {
 
+DXFCXX_DISABLE_GCC_WARNINGS_PUSH("-Wunused-variable")
 static std::int32_t DAY_OF_YEAR[] = {0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
+DXFCXX_DISABLE_GCC_WARNINGS_POP()
 
 /**
  * Returns yyyymmdd integer in Gregorian calendar for a specified day identifier.
@@ -285,7 +287,7 @@ constexpr static std::int32_t getYearMonthDayByDayId(std::int32_t dayId) {
     return yyyy >= 0 ? yyyymmdd : -yyyymmdd;
 }
 
-static std::int32_t getDayIdByYearMonthDay(std::int32_t year, std::int32_t month, std::int32_t day);
+std::int32_t getDayIdByYearMonthDay(std::int32_t year, std::int32_t month, std::int32_t day);
 
 } // namespace day_util
 
@@ -775,6 +777,7 @@ struct StringLikeWrapper {
     }
 };
 
+/// Universal functional object that allows searching std::unordered_map for string-like keys.
 struct StringHash {
     using HashType = std::hash<std::string_view>;
     using is_transparent = void;
@@ -783,8 +786,8 @@ struct StringHash {
         return HashType{}(str);
     }
 
-    std::size_t operator()(std::string_view str) const {
-        return HashType{}(str);
+    std::size_t operator()(std::string_view sw) const {
+        return HashType{}(sw);
     }
 
     std::size_t operator()(std::string const &str) const {
@@ -798,7 +801,7 @@ struct StringHash {
 
 namespace util {
 
-inline void throwInvalidChar(char c, const std::string &name);
+void throwInvalidChar(char c, const std::string &name);
 
 inline void checkChar(char c, std::uint32_t mask, const std::string &name) {
     if ((andOp(c, ~mask)) != 0) {
