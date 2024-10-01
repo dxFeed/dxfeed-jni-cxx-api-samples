@@ -37,7 +37,7 @@ The project consists of 4 parts:
 - Extract JDK 8 somewhere
 - Change the directory to the directory where `dllsample-sample.exe` is located. Set JAVA_HOME. Run `dllsample-sample.exe` 
 ```shell
-@ cd <PATH_TO_DIR_WHERE_SAMPLE_IS_LOCATED>
+@cd <PATH_TO_DIR_WHERE_SAMPLE_IS_LOCATED>
 @set JAVA_HOME=<PATH_TO_JDK>
 dllsample-sample.exe
 ```
@@ -47,6 +47,45 @@ or
 - Install JDK 8 x86_32 globally
 - Change the directory to the directory where `dllsample-sample.exe` is located and run it.
 ```shell
-@ cd <PATH_TO_DIR_WHERE_SAMPLE_IS_LOCATED>
+@cd <PATH_TO_DIR_WHERE_SAMPLE_IS_LOCATED>
 dllsample-sample.exe
+```
+
+## Run the pre-built program
+
+```shell
+./bin/run.cmd
+```
+
+or
+
+```shell
+./bin/run.cmd demo.dxfeed.com:7300 AAPL
+```
+
+Output:
+
+```shell
+Connecting to demo.dxfeed.com:7300
+Use JAVA_HOME from ENV: C:\w\dxfeed-jni-cxx-api-samples\dll-sample\bin\..\third_party\dxfeed-graal-cxx-api\jdk\zulu8.80.0.17-ca-jdk8.0.422-win_i686
+APP_RUNTIME_PATH: "C:\\w\\dxfeed-jni-cxx-api-samples\\dll-sample\\bin"
+DxFeed JAR path: "C:\\w\\dxfeed-jni-cxx-api-samples\\dll-sample\\bin\\dxfeed-jni-native-sdk-0.1.0.jar"
+Run cmd "java -Djava.class.path=C:\w\dxfeed-jni-cxx-api-samples\dll-sample\bin\dxfeed-jni-native-sdk-0.1.0.jar;C:\w\dxfeed-jni-cxx-api-samples\dll-sample\bin"
+I 241001 154808.467 [main] QD - Using QDS-UNKNOWN, (C) Devexperts
+I 241001 154808.532 [main] QD - Using scheme com.dxfeed.api.impl.DXFeedScheme Ao7i0mLrB7RbnGZ43PGWcWWLGeKJ79lOVlbtAxAaXTI
+I 241001 154808.597 [main] MARS - Started JVM self-monitoring
+I 241001 154809.117 [main] QD - monitoring with collectors [Ticker, Stream, History]
+I 241001 154809.237 [main] ClientSocket-Distributor - Starting ClientSocketConnector to demo.dxfeed.com:7300
+Subscribing to AAPL
+I 241001 154809.240 [demo.dxfeed.com:7300-Reader] ClientSocketConnector - Resolving IPs for demo.dxfeed.com
+I 241001 154809.295 [demo.dxfeed.com:7300-Reader] ClientSocketConnector - Connecting to 208.93.103.170:7300
+I 241001 154809.298 [demo.dxfeed.com:7300-Reader] ClientSocketConnector - Connected to 208.93.103.170:7300
+D 241001 154809.715 [demo.dxfeed.com:7300-Reader] QD - Distributor received protocol descriptor multiplexor@nYDlu [type=qtp, version=QDS-3.327, opt=hs, mars.root=mdd.demo-amazon.multiplexor-demo1] sending [TICKER, STREAM, HISTORY, DATA] from 208.93.103.170
+Quote{AAPL, bid_price = 229.9, bid_size = 3, ask_price = 230.04, ask_size = 1}
+Trade{AAPL, price = 233, size = nan, dayVolume = 1086442}
+Trade{AAPL, price = 233, size = nan, dayVolume = 1086484}
+Quote{AAPL, bid_price = 229.9, bid_size = 3, ask_price = 229.99, ask_size = 1}
+Quote{AAPL, bid_price = 229.9, bid_size = 3, ask_price = 230.04, ask_size = 1}
+Trade{AAPL, price = 233, size = nan, dayVolume = 1086489}
+Trade{AAPL, price = 233, size = nan, dayVolume = 1086496}
 ```
