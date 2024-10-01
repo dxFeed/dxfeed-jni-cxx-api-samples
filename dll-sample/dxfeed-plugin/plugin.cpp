@@ -74,7 +74,7 @@ DLLSAMPLE_API void dsp_subscribe(const char *symbol, dsp_events_listener_t event
                                     q->getAskSize()});
             } else if (const auto &tr = e->template sharedAs<Trade>(); tr) {
                 eventsToListener[index++] = dxfcpp::bit_cast<dsp_event_t *>(
-                    new dsp_trade_t{{DSP_ET_TRADE}, tr->getPrice(), tr->getSize()});
+                    new dsp_trade_t{{DSP_ET_TRADE}, tr->getPrice(), tr->getSize(), tr->getDayVolume()});
             }
         };
 

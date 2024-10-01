@@ -50,6 +50,7 @@ typedef struct dsp_trade_t {
 
     double price;
     double size;
+    double dayVolume;
 } dsp_trade_t;
 
 #pragma pack(pop)

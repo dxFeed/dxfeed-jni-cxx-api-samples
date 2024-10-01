@@ -14,16 +14,19 @@ void listener(dsp_event_t **events, size_t size, void *user_data) {
         return;
     }
 
+    char *symbol = user_data == NULL ? "" : (char *)(user_data);
+
     for (size_t i = 0; i < size; i++) {
         if (events[i]->type == DSP_ET_QUOTE) {
             dsp_quote_t *q = (dsp_quote_t *)(events[i]);
 
-            printf("Quote{bid_price = %.15g, bid_size = %.15g, ask_price = %.15g, ask_size = %.15g}\n", q->bid_price,
-                   q->bid_size, q->ask_price, q->ask_size);
+            printf("Quote{%s, bid_price = %.15g, bid_size = %.15g, ask_price = %.15g, ask_size = %.15g}\n", symbol,
+                   q->bid_price, q->bid_size, q->ask_price, q->ask_size);
         } else if (events[i]->type == DSP_ET_TRADE) {
             dsp_trade_t *tr = (dsp_trade_t *)(events[i]);
 
-            printf("Trade{price = %.15g, size = %.15g}\n", tr->price, tr->size);
+            printf("Trade{%s, price = %.15g, size = %.15g, dayVolume = %.15g}\n", symbol, tr->price, tr->size,
+                   tr->dayVolume);
         }
     }
 }
@@ -72,7 +75,7 @@ int main(int argc, char **argv) {
     printf("Connecting to %s\n", address);
     dsp_connect(address);
     printf("Subscribing to %s\n", symbol);
-    dsp_subscribe(symbol, listener, NULL);
+    dsp_subscribe(symbol, listener, symbol);
 
     Sleep(10000);
     FreeLibrary(plugin_handle);
